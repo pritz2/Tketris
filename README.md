@@ -1,2 +1,2 @@
 # Tketris
-Simply tetris game implemented in Python
+Simple tetris game implemented in Python
