@@ -1,20 +1,12 @@
 from tkinter import Tk, Canvas
 
 class Tetris():
-    WIDTH = 500
-    HEIGHT = 900
-    
     def init(self):
         self.root = Tk()
         self.root.title("Tetris! By the Pritz Brothers")
-        
-        self.canvas = Canvas(
-                self.root, 
-                width=Tetris.WIDTH, 
-                height=Tetris.HEIGHT)
-        self.canvas.pack()
 
-        self.current_piece = Piece(self.canvas)
+        self.board = Board(self.root)
+        self.current_piece = Piece(self.board)
 
         self.time_interval = 500
         self.timer()
@@ -25,15 +17,31 @@ class Tetris():
         self.root.after(self.time_interval, self.timer)
         self.current_piece.fall()
 
-class Piece():
+class Board():
     BOX_SIZE = 50
-    
-    def __init__(self, canvas):
-        self.canvas = canvas
-        self.box = self.canvas.create_rectangle(100, 0, Piece.BOX_SIZE, Piece.BOX_SIZE, fill="blue")
+    WIDTH = 500
+    HEIGHT = 900
+
+    def __init__(self, root):
+        self.canvas = Canvas(
+            root,
+            width=Board.WIDTH,
+            height=Board.HEIGHT)
+        self.canvas.pack()
+
+    def create_rectangle(self):
+        return self.canvas.create_rectangle(100, 0, Board.BOX_SIZE, Board.BOX_SIZE, fill="blue")
+
+    def fall(self, piece):
+        self.canvas.move(piece, 0, Board.BOX_SIZE)
+
+class Piece():
+    def __init__(self, board):
+        self.board = board
+        self.box = self.board.create_rectangle()
 
     def fall(self):
-        self.canvas.move(self.box, 0, Piece.BOX_SIZE)
+        self.board.fall(self.box)
 
 if __name__ == "__main__":
     game = Tetris()
