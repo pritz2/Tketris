@@ -20,7 +20,7 @@ class Tetris():
 class Board():
     BOX_SIZE = 50
     WIDTH = 500
-    HEIGHT = 900
+    HEIGHT = 700
 
     def __init__(self, root):
         self.canvas = Canvas(
@@ -33,17 +33,25 @@ class Board():
         return self.canvas.create_rectangle(100, 0, Board.BOX_SIZE, Board.BOX_SIZE, fill="blue")
 
     def fall(self, box):
-        if self.can_move(box):
+        if self.can_move(box, 0, 1):
             self.canvas.move(box, 0, Board.BOX_SIZE)
-            #print(self.canvas.coords(piece))
 
-    def can_move(self, box):
+    def can_move(self, box, x, y):
+        x = x * Board.BOX_SIZE
+        y = y * Board.BOX_SIZE
         coords = self.canvas.coords(box)
-        print(coords)
-        if coords[0] == 0 or coords[2] == Board.WIDTH or coords[3] == Board.HEIGHT:
+        if coords[0] + x < 0: return False
+        if coords[2] + x > Board.WIDTH: return False
+        if coords[3] + y > Board.HEIGHT: return False
+        if set(self.canvas.find_overlapping(
+                (coords[0] + coords[2]) / 2 + x, 
+                (coords[1] + coords[3]) / 2 + y, 
+                (coords[0] + coords[2]) / 2 + x,
+                (coords[1] + coords[3]) / 2 + y
+                )):
             return False
-        return True
 
+        return True
 
 class Piece():
     def __init__(self, board):
