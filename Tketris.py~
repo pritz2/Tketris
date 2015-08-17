@@ -40,9 +40,10 @@ class Board():
     def can_move(self, box):
         coords = self.canvas.coords(box)
         print(coords)
-        if coords[0] == 0 or coords[2] == Board.WIDTH or coords[3] == Board.HEIGHT:
+        if coords[3] == Board.HEIGHT:
             return False
-        return True
+        else:
+            return True
 
 
 class Piece():
